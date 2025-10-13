@@ -1,0 +1,172 @@
+# Definimos el menú y el inventario usando un diccionario.
+# Cada producto es una clave, y el valor es un diccionario con su precio y cantidad.
+menu_inventario = {
+    'hamburguesa': {'precio': 5.50, 'cantidad': 20},
+    'papas fritas': {'precio': 2.50, 'cantidad': 30},
+    'refresco': {'precio': 1.80, 'cantidad': 50},
+    'hot dog': {'precio': 3.00, 'cantidad': 15}
+}
+
+def mostrar_menu():
+    """Muestra el menú de productos con sus precios."""
+    print("\n--- Nuestro Menú ---")
+    for producto, detalles in menu_inventario.items():
+        print(f"- {producto.capitalize()}: ${detalles['precio']:.2f}")
+
+def mostrar_inventario():
+    """Muestra la cantidad de cada producto en el inventario."""
+    print("\n--- Inventario Actual ---")
+    for producto, detalles in menu_inventario.items():
+        print(f"- {producto.capitalize()}: {detalles['cantidad']} unidades")
+
+def procesar_cobro():
+    """Procesa un pedido, calcula el total y actualiza el inventario."""
+    pedido = {}
+    total = 0.0
+    print("\n--- Proceso de Cobro ---")
+
+    while True:
+        producto_elegido = input("Ingresa el nombre del producto (o 'listo' para terminar): ").lower()
+        if producto_elegido == 'listo':
+            break
+
+        if producto_elegido in menu_inventario:
+            try:
+                cantidad = int(input(f"¿Cuántas unidades de '{producto_elegido}' quieres?: "))
+                if cantidad > 0:
+                    # Verificamos si hay suficiente stock antes de añadir al pedido
+                    if cantidad <= menu_inventario[producto_elegido]['cantidad']:
+                        if producto_elegido in pedido:
+                            pedido[producto_elegido] += cantidad
+                        else:
+                            pedido[producto_elegido] = cantidad
+                        print(f"{cantidad} '{producto_elegido}' añadidos al pedido.")
+                    else:
+                        print("Lo siento, no hay suficiente stock de este producto.")
+                else:
+                    print("Por favor, ingresa un número mayor a cero.")
+            except ValueError:
+                print("Entrada no válida. Por favor, ingresa un número.")
+        else:
+            print("Producto no encontrado. Por favor, revisa el menú.")
+
+    # Calculamos el total y actualizamos el inventario
+    print("\n--- Resumen del Pedido ---")
+    if not pedido:
+        print("El pedido está vacío.")
+        return
+
+    for producto, cantidad in pedido.items():
+        precio_unitario = menu_inventario[producto]['precio']
+        subtotal = precio_unitario * cantidad
+        total += subtotal
+        print(f"- {producto.capitalize()} x{cantidad}: ${subtotal:.2f}")
+        # Actualizamos el inventario
+        menu_inventario[producto]['cantidad'] -= cantidad
+
+    print(f"\nTotal a pagar: ${total:.2f}")
+    print("¡Gracias por tu compra!")
+
+def agregar_producto():
+    """Permite al usuario agregar un nuevo producto al menú y al inventario."""
+    print("\n--- Agregar Nuevo Producto ---")
+    nombre_producto = input("Ingresa el nombre del nuevo producto: ").lower()
+
+    if nombre_producto in menu_inventario:
+        print("Este producto ya existe. Considera actualizar el inventario desde la opción 2.")
+        return
+
+    try:
+        precio_producto = float(input(f"Ingresa el precio de '{nombre_producto}': "))
+        cantidad_producto = int(input(f"Ingresa la cantidad inicial de '{nombre_producto}': "))
+        
+        if precio_producto > 0 and cantidad_producto >= 0:
+            menu_inventario[nombre_producto] = {'precio': precio_producto, 'cantidad': cantidad_producto}
+            print(f"'{nombre_producto.capitalize()}' ha sido agregado exitosamente.")
+        else:
+            print("Error: El precio debe ser mayor a 0 y la cantidad no puede ser negativa.")
+    except ValueError:
+        print("Error: Por favor, ingresa un número válido para el precio y la cantidad.")
+        
+def eliminar_producto():
+    """Permite al usuario eliminar un producto del menú y del inventario."""
+    print("\n--- Eliminar Producto ---")
+    nombre_producto = input("Ingresa el nombre del producto que deseas eliminar: ").lower()
+
+    if nombre_producto in menu_inventario:
+        del menu_inventario[nombre_producto]
+        print(f"'{nombre_producto.capitalize()}' ha sido eliminado del menú.")
+    else:
+        print("Error: Producto no encontrado. Por favor, revisa el menú.")
+
+def modificar_producto():
+    """Permite modificar el precio o la cantidad de un producto existente."""
+    print("\n--- Modificar Producto Existente ---")
+    nombre_producto = input("Ingresa el nombre del producto a modificar: ").lower()
+
+    if nombre_producto not in menu_inventario:
+        print("Error: Producto no encontrado. Por favor, revisa el menú.")
+        return
+
+    print(f"Modificando '{nombre_producto.capitalize()}'.")
+    print("1. Modificar precio")
+    print("2. Modificar cantidad")
+    opcion = input("Elige una opción: ")
+
+    if opcion == '1':
+        try:
+            nuevo_precio = float(input("Ingresa el nuevo precio: "))
+            if nuevo_precio > 0:
+                menu_inventario[nombre_producto]['precio'] = nuevo_precio
+                print("Precio actualizado exitosamente.")
+            else:
+                print("Error: El precio debe ser un número mayor a 0.")
+        except ValueError:
+            print("Entrada no válida. Por favor, ingresa un número.")
+    elif opcion == '2':
+        try:
+            nueva_cantidad = int(input("Ingresa la nueva cantidad: "))
+            if nueva_cantidad >= 0:
+                menu_inventario[nombre_producto]['cantidad'] = nueva_cantidad
+                print("Cantidad actualizada exitosamente.")
+            else:
+                print("Error: La cantidad no puede ser negativa.")
+        except ValueError:
+            print("Entrada no válida. Por favor, ingresa un número entero.")
+    else:
+        print("Opción no válida. No se realizaron cambios.")
+
+def main():
+    """Función principal que ejecuta el programa."""
+    while True:
+        print("\n--- Bienvenido a la App de tu Negocio ---")
+        print("1. Ver Menú")
+        print("2. Ver Inventario")
+        print("3. Iniciar Cobro")
+        print("4. Agregar Nuevo Producto")
+        print("5. Eliminar Producto")
+        print("6. Modificar Producto")
+        print("7. Salir")
+        opcion = input("Elige una opción: ")
+
+        if opcion == '1':
+            mostrar_menu()
+        elif opcion == '2':
+            mostrar_inventario()
+        elif opcion == '3':
+            procesar_cobro()
+        elif opcion == '4':
+            agregar_producto()
+        elif opcion == '5':
+            eliminar_producto()
+        elif opcion == '6':
+            modificar_producto()
+        elif opcion == '7':
+            print("Saliendo de la aplicación. ¡Hasta pronto!")
+            break
+        else:
+            print("Opción no válida, por favor intenta de nuevo.")
+
+# Para ejecutar el programa
+if __name__ == "__main__":
+    main()
