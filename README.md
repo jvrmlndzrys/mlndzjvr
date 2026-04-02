@@ -1,26 +1,45 @@
-# Face Recognition Android App
+# 🍔 App de tu Negocio v2.0
 
-Una aplicación Android de reconocimiento facial con autenticación de Google y sistema de roles administrativos.
+Sistema de gestión de negocio de comida rápida hecho en Python.
 
-## 🚀 Características
+## ✅ Funcionalidades
 
-- **Reconocimiento Facial** usando ML Kit de Google
-- **Autenticación con Google** mediante Firebase Auth
-- **Sistema de Roles** (Administrador/Usuario)
-- **Aprobación de Usuarios** solo por administradores
-- **Base de Datos Local** SQLite para embeddings faciales
-- **Firestore** para gestión de usuarios y solicitudes
+| # | Función | Estado |
+|---|---------|--------|
+| 1 | Ver menú con precios | ✅ |
+| 2 | Ver inventario con alertas de stock | ✅ |
+| 3 | Procesar cobro con ticket impreso | ✅ |
+| 4 | Historial de ventas con total acumulado | ✅ |
+| 5 | Agregar producto (requiere clave admin) | ✅ |
+| 6 | Eliminar producto (requiere clave admin) | ✅ |
+| 7 | Modificar precio/cantidad (requiere clave admin) | ✅ |
+| 8 | Cambiar contraseña de administrador | ✅ |
+| 9 | Persistencia de datos en JSON | ✅ |
+| 10 | Alerta automática de stock bajo | ✅ |
 
-## 📋 Prerrequisitos
+## 🚀 Cómo ejecutar
 
-- Android Studio Arctic Fox o superior
-- SDK mínimo: API 24 (Android 7.0)
-- Dispositivo con cámara
-- Cuenta de Google para autenticación
-- Proyecto Firebase configurado
-
-## 🔧 Configuración
-
-### 1. Clonar el repositorio
 ```bash
-git clone https://github.com/tu-usuario/face-recognition-app.git# mlndzjvr
+python3 comida.py
+```
+
+## 🔐 Contraseña de administrador
+
+La contraseña por defecto es:
+```
+admin123
+```
+Se puede cambiar desde la opción **8** del menú principal.
+
+## 📁 Archivos generados automáticamente
+
+| Archivo | Descripción |
+|---------|-------------|
+| `inventario.json` | Guarda el inventario (no se pierde al cerrar) |
+| `historial.json` | Registra todas las ventas realizadas |
+| `config.json` | Guarda la contraseña del administrador (encriptada) |
+
+## 📋 Requisitos
+
+- Python 3.6 o superior
+- Sin dependencias externas (solo librería estándar)
