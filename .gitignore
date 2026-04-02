@@ -1,0 +1,9 @@
+# Archivos generados por la app (datos locales)
+inventario.json
+historial.json
+config.json
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
